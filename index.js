@@ -1,5 +1,4 @@
-const { promises } = require('fs')
-const fs = promises
+const { promises : fs} = require('fs')
 
 class ProductManager {
     constructor(products = []) {
@@ -60,7 +59,7 @@ class ProductManager {
         try {
             const resp = await fs.readFile(this.path, 'utf-8')
             const productos = JSON.parse(resp)
-            const product = productos.find((p) => p.id === id);
+            const product = productos.find(p => p.id === id);
             console.log(product)
             return product
         } catch(error){
@@ -81,14 +80,34 @@ class ProductManager {
         }
     }
 
-    // deleteProduct()
+    deleteProduct = async (id) => {
+        try {
+            const resp = await fs.readFile(this.path, 'utf-8')
+            const productos = JSON.parse(resp)
+    
+            const productToDelete = productos.find((p) => p.id === id);
+            if (!productToDelete) {
+                console.error("No se encontró el producto con el id ingresado");
+                return;
+            }
+    
+            const productIndex = productos.findIndex((p) => p.id === id);
+            productos.splice(productIndex, 1);
+    
+            await fs.writeFile(this.path, JSON.stringify(productos, null, 2), 'utf-8')
+            console.log("Producto eliminado:", productToDelete);
+        } catch(error) {
+            console.log(error)
+        }
+    }
+    
 
     updateProduct = async (id, obj) => {
         try {
             const resp = await fs.readFile(this.path, 'utf-8')
             const productos = JSON.parse(resp)
     
-            const productToUpdate = productos.find((p) => p.id === id);
+            const productToUpdate = productos.find(p => p.id === id);
             if (!productToUpdate) {
                 console.error("No se encontró el producto con el id ingresado");
                 return;
@@ -143,15 +162,17 @@ const newProduct4 = {
     stock: 5
 };
 
-// nuevoProducto.addProduct(newProduct)
-// nuevoProducto.addProduct(newProduct2)
-// nuevoProducto.addProduct(newProduct3)
-// nuevoProducto.addProduct(newProduct4)
+nuevoProducto.addProduct(newProduct)
+nuevoProducto.addProduct(newProduct2)
+nuevoProducto.addProduct(newProduct3)
+nuevoProducto.addProduct(newProduct4)
 
 // nuevoProducto.getProducts()
 // nuevoProducto.getProductById(2)
 
-nuevoProducto.updateProduct(2, {
-    title: 'Motito',
-    price: 2330
-})
+// nuevoProducto.updateProduct(2, {
+//     title: 'Motito',
+//     price: 2330
+// })
+
+// nuevoProducto.deleteProduct(2)
