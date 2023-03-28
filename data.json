@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "title": "Bicicleta de montaña",
+    "description": "Una bicicleta de montaña de alta calidad",
+    "price": 100,
+    "thumbnail": "bicicleta.jpg",
+    "code": "BIKE001",
+    "stock": 10
+  },
+  {
+    "id": 2,
+    "title": "Moto",
+    "description": "Moto R1000",
+    "price": 1500,
+    "thumbnail": "moto.jpg",
+    "code": "BIKE002",
+    "stock": 5
+  },
+  {
+    "id": 3,
+    "title": "Auto",
+    "description": "Auto BMW M3",
+    "price": 4000,
+    "thumbnail": "car.jpg",
+    "code": "CAR001",
+    "stock": 3
+  },
+  {
+    "id": 4,
+    "title": "Camion",
+    "description": "Camión Scania",
+    "price": 5500,
+    "thumbnail": "camion.jpg",
+    "code": "TRUCK001",
+    "stock": 5
+  }
+]
