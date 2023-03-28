@@ -62,21 +62,47 @@ class ProductManager {
             const productos = JSON.parse(resp)
             const product = productos.find((p) => p.id === id);
             console.log(product)
+            return product
         } catch(error){
             console.log(error)
         }
     }
 
-    getProductByCode(code) {
-        return this.products.find((p) => p.code === code);
+    getProductByCode = async (code) => {
+        try {
+            const resp = await fs.readFile(this.path, 'utf-8')
+            const productos = JSON.parse(resp)
+            const productoFiltrado = productos.find((p) => p.code === code);
+
+            return productoFiltrado ? productoFiltrado : null       
+        } 
+        catch (error){
+            console.log(error)
+        }
     }
 
     // deleteProduct()
 
-    // updateProduct()
-
-
-            // await fs.writeFile('./data.txt', 'productos', 'utf-8')
+    updateProduct = async (id, obj) => {
+        try {
+            const resp = await fs.readFile(this.path, 'utf-8')
+            const productos = JSON.parse(resp)
+    
+            const productToUpdate = productos.find((p) => p.id === id);
+            if (!productToUpdate) {
+                console.error("No se encontró el producto con el id ingresado");
+                return;
+            }
+    
+            Object.assign(productToUpdate, obj);
+    
+            await fs.writeFile(this.path, JSON.stringify(productos, null, 2), 'utf-8')
+            console.log("Producto actualizado:", productToUpdate);
+        } catch(error) {
+            console.log(error)
+        }
+    }
+    
 
 }
 
@@ -117,75 +143,15 @@ const newProduct4 = {
     stock: 5
 };
 
-nuevoProducto.addProduct(newProduct)
-nuevoProducto.addProduct(newProduct2)
-nuevoProducto.addProduct(newProduct3)
-nuevoProducto.addProduct(newProduct4)
+// nuevoProducto.addProduct(newProduct)
+// nuevoProducto.addProduct(newProduct2)
+// nuevoProducto.addProduct(newProduct3)
+// nuevoProducto.addProduct(newProduct4)
 
 // nuevoProducto.getProducts()
-nuevoProducto.getProductById(7)
+// nuevoProducto.getProductById(2)
 
-
-
-// const productos = nuevoProducto.getProducts()
-
-// const operacionesAsync = async () => {    
-//     try {
-//          await fs.writeFile('./data.txt', 'productos', 'utf-8')
-
-//          await fs.appendFile('./data.txt', 'hola que tal\n', 'utf-8')
-
-//          let contenido = await fs.readFile('./data.txt', 'utf-8')
-//          console.log(contenido)
-
-//          let archivoJSON = await fs.readFile('./package.json', 'utf-8')
-//          const archivoParseado = (JSON.parse(archivoJSON))
-
-
-//          await fs.appendFile('./data.txt', archivoParseado, 'utf-8')
-
-
-
-
-
-
-//     } catch (error) {
-//         console.log(error)
-//     }    
-
-// }
-
-
-// operacionesAsync()
-
-
-
-
-
-// class celulares {
-//     constructor(color, peso, rdp, rdc, ram){
-//         this.color = color,
-//         this.peso = peso,
-//         this.resolucionDePantalla = rdp,
-//         this.resoluciondeCarama = rdc,
-//         this.memoriaRam = ram
-//     }
-
-//     prender(){
-//         console.log('prendiendo')
-//     }
-//     apagar(){
-//         console.log('apagando')
-//     }
-//     tomarFoto(){
-//         console.log('sacando foto')
-//     }
-//     grabar(){
-//         console.log('grabando')
-//     }
-
-// }
-
-// const newCelular = new celulares("rojo", 250, 32, 24, "2gb")
-// console.log(newCelular)
-// newCelular.grabar()
+nuevoProducto.updateProduct(2, {
+    title: 'Motito',
+    price: 2330
+})
