@@ -1,4 +1,5 @@
-const { promises : fs} = require('fs')
+const { promises } = require('fs')
+const fs = promises
 
 class ProductManager {
     constructor(products = []) {
@@ -6,6 +7,16 @@ class ProductManager {
         this.lastId = 0
         this.path = './data.json'
     }   
+
+    saveProducts = async () => {
+        try {
+            const resp = await fs.readFile(this.path, 'utf-8')
+            const productos = JSON.parse(resp)
+            return productos
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     appendProduct = async () => {
         try {
@@ -27,7 +38,7 @@ class ProductManager {
             code,
             stock,
         };
-        
+
         if (!title || !description || !price || !thumbnail || !code || !stock) {
             console.error("Todos los campos son obligatorios");
             return;
@@ -47,8 +58,7 @@ class ProductManager {
 
     getProducts = async () => {
         try {
-            const resp = await fs.readFile(this.path, 'utf-8')
-            const productos = JSON.parse(resp)
+            const productos = await this.saveProducts()
             console.log(productos)
         } catch(error){
             console.log(error)
@@ -57,55 +67,41 @@ class ProductManager {
 
     getProductById = async (id) => {
         try {
-            const resp = await fs.readFile(this.path, 'utf-8')
-            const productos = JSON.parse(resp)
-            const product = productos.find(p => p.id === id);
+            const productos = await this.saveProducts()
+            const product = productos.find((p) => p.id === id);
             console.log(product)
-            return product
         } catch(error){
             console.log(error)
         }
     }
 
-    getProductByCode = async (code) => {
-        try {
-            const resp = await fs.readFile(this.path, 'utf-8')
-            const productos = JSON.parse(resp)
-            const productoFiltrado = productos.find((p) => p.code === code);
-
-            return productoFiltrado ? productoFiltrado : null       
-        } 
-        catch (error){
-            console.log(error)
-        }
+    getProductByCode(code) {
+        return this.products.find((p) => p.code === code);
     }
 
     deleteProduct = async (id) => {
-        try {
-            const resp = await fs.readFile(this.path, 'utf-8')
-            const productos = JSON.parse(resp)
-    
-            const productToDelete = productos.find((p) => p.id === id);
-            if (!productToDelete) {
-                console.error("No se encontró el producto con el id ingresado");
-                return;
-            }
-    
-            const productIndex = productos.findIndex((p) => p.id === id);
-            productos.splice(productIndex, 1);
-    
-            await fs.writeFile(this.path, JSON.stringify(productos, null, 2), 'utf-8')
-            console.log("Producto eliminado:", productToDelete);
-        } catch(error) {
-            console.log(error)
+    try {
+        const productos = await this.saveProducts()
+
+        const productToDelete = productos.find((p) => p.id === id);
+        if (!productToDelete) {
+            console.error("No se encontró el producto con el id ingresado");
+            return;
         }
+
+        const productIndex = productos.findIndex((p) => p.id === id);
+        productos.splice(productIndex, 1);
+
+        await fs.writeFile(this.path, JSON.stringify(productos, null, 2), 'utf-8')
+        console.log("Producto eliminado:", productToDelete);
+    } catch(error) {
+        console.log(error)
     }
-    
+}
 
     updateProduct = async (id, obj) => {
         try {
-            const resp = await fs.readFile(this.path, 'utf-8')
-            const productos = JSON.parse(resp)
+            const productos = await this.saveProducts()
     
             const productToUpdate = productos.find(p => p.id === id);
             if (!productToUpdate) {
@@ -121,11 +117,10 @@ class ProductManager {
             console.log(error)
         }
     }
-    
-
 }
 
 const nuevoProducto = new ProductManager();
+
 const newProduct = {
     title: 'Bicicleta de montaña',
     description: 'Una bicicleta de montaña de alta calidad',
@@ -167,12 +162,12 @@ nuevoProducto.addProduct(newProduct2)
 nuevoProducto.addProduct(newProduct3)
 nuevoProducto.addProduct(newProduct4)
 
-// nuevoProducto.getProducts()
-// nuevoProducto.getProductById(2)
+nuevoProducto.getProducts()
 
-// nuevoProducto.updateProduct(2, {
-//     title: 'Motito',
-//     price: 2330
-// })
+// nuevoProducto.getProductById(7)
 
 // nuevoProducto.deleteProduct(2)
+
+// nuevoProducto.updateProduct(1, {
+//     title: 'Bicicleta de Ruta'
+// })

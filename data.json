@@ -9,6 +9,24 @@
     "stock": 10
   },
   {
+    "id": 2,
+    "title": "Moto",
+    "description": "Moto R1000",
+    "price": 1500,
+    "thumbnail": "moto.jpg",
+    "code": "BIKE002",
+    "stock": 5
+  },
+  {
+    "id": 3,
+    "title": "Auto",
+    "description": "Auto BMW M3",
+    "price": 4000,
+    "thumbnail": "car.jpg",
+    "code": "CAR001",
+    "stock": 3
+  },
+  {
     "id": 4,
     "title": "Camion",
     "description": "Camión Scania",
