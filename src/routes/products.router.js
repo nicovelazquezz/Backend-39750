@@ -32,7 +32,7 @@ router.get('/:id', async (req, res) => {
     }
 }); 
 
-// POST DE UN PRODUCTO
+// CREAR UN PRODUCTO
 router.post('/', async (req, res) => {
     try {
         // Obtenemos el body
@@ -56,6 +56,37 @@ router.post('/', async (req, res) => {
     catch (err) {
         res.status(400).send({ message: err + 'Error al agregar producto' })
     }
+});
+
+// BORRAR UN PRODUCTO
+router.delete('/:id', async (req, res) => {
+    try {
+        const params = Number(req.params.id)
+        const response = await pm.deleteProduct(params)   
+
+        res.status(200).send(`El producto fue eliminado con exito`)
+
+        if (!response.error) return res.status(400).send({ response })
+        
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+// ACTUALIZAR UN PRODUCTO
+router.put('/:id', async (req, res) => {
+    try {
+        const id = Number(req.params.id)
+        
+        const productUpdate = req.body
+
+        const updateProduct = await pm.updateProduct(id, productUpdate)        
+        res.status(200).send(updateProduct)
+    }
+    catch (err) {
+        console.log(err);
+    }
+
 });
 
 

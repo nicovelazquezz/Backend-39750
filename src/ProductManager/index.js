@@ -124,6 +124,7 @@ class ProductManager {
 
             await fs.writeFile(this.path, JSON.stringify(productos, null, 2), 'utf-8')
             console.log("Producto actualizado:", productToUpdate);
+            return productToUpdate
         } catch (error) {
             console.log(error)
         }
@@ -156,6 +157,23 @@ const nuevoProducto = new ProductManager();
 //         code: 'CAMIONETA003',
 //         stock: 3
 //     })
+
+// nuevoProducto.addProduct({
+//     title: 'Bicicleta plegable',
+//     description: 'Bicicleta plegable para transporte urbano',
+//     price: 800,
+//     thumbnail: 'bicicleta.jpg',
+//     code: 'BIKE004',
+//     stock: 12
+// })
+// nuevoProducto.addProduct(   {
+//     title: 'Moto custom',
+//     description: 'Moto custom con estilo clásico',
+//     price: 12000,
+//     thumbnail: 'moto.jpg',
+//     code: 'MOTO003',
+//     stock: 4
+// })
 
 
 
