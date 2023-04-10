@@ -1,4 +1,4 @@
-const { mock } = require ('./mock')
+const { mock } = require ('../../mock')
 const { promises } = require('fs')
 const fs = promises
 
