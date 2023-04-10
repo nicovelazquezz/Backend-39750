@@ -6,7 +6,7 @@ class ProductManager {
     constructor(products = []) {
         this.products = products
         this.lastId = 0
-        this.path = './data.json'
+        this.path = `${__dirname}/../../data.json`
     }
 
     getProducts = async () => {
@@ -23,7 +23,7 @@ class ProductManager {
         try {
             const productJSON = JSON.stringify(this.products, null, 2)
             console.log('Escribiendo en el archivo', this.path);
-            await fs.writeFile(this.path, productJSON, 'utf-8')
+            await fs.writeFile(this.path, productJSON)
         } catch (error) {
             console.log(error)
         }
@@ -45,9 +45,9 @@ class ProductManager {
             return;
         }
 
-        if (this.getProductByCode(code)) {
-            console.error("Ya existe un producto con el código ingresado");
-            return;
+        const validarCodigo = this.products.find(productos => productos.code === product.code)
+        if (validarCodigo) {
+            return { status: "error", message: 'El producto no se pudo agregar porque el codigo es repetido' }
         }
 
 
@@ -67,11 +67,6 @@ class ProductManager {
         }
     }
 
-    getProductByCode= async (code) => {
-        const productos = await this.getProducts();
-        return productos.find((p) => p.code === code);
-    }
-    
 
     deleteProduct = async (id) => {
         try {

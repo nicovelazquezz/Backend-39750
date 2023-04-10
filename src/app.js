@@ -15,6 +15,7 @@ const cartRouter = require('./routes/cart.router')
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname+'/public'))
 
+
 app.listen(8010, () => {
     console.log('Running on port 8010')})
 
