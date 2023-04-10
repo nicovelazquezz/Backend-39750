@@ -2,7 +2,7 @@ const express = require('express')
 const { Router } = require('express')
 const { ProductManager } = require('../ProductManager/index')
 
-const productManager = new ProductManager
+const pm = new ProductManager
 const router = Router()
 
 router.use(express.json())
@@ -10,7 +10,7 @@ router.use(express.json())
 // TRAER TOODS LOS PRODUCTOS Y FILTRADO DE LIMIT
 router.get('/', async (req, res) => {
     try {
-        const products = await productManager.getProducts()
+        const products = await pm.getProducts()
         const limit = req.query.limit
 
         limit ? res.status(200).send(products.slice(0, limit)) : res.status(200).send(products)  
@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const params = Number(req.params.id)
-        const product = await productManager.getProductById(params)
+        const product = await pm.getProductById(params)
         res.status(200).send(product)
 
     } catch (error) {
@@ -49,14 +49,14 @@ router.post('/', async (req, res) => {
         } = productSend
 
 
-        const agregado = await productManager.addProduct({title, description, price, thumbnail, code, stock})
-        const products = await productManager.getProducts()
+        const agregado = await pm.addProduct({title, description, price, thumbnail, code, stock})
+        const products = await pm.getProducts()
         res.status(200).send(products)
     }
     catch (err) {
-        console.log(err);
+        res.status(400).send({ message: err + 'Error al agregar producto' })
     }
-
 });
+
 
 module.exports = router;

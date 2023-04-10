@@ -1,12 +1,11 @@
-const { mock } = require ('../../mock')
+const { mock } = require('../../mock')
 const { promises } = require('fs')
 const fs = promises
 
 class ProductManager {
     constructor(products = []) {
         this.products = products
-        this.lastId = 0
-        this.path = `${__dirname}/../../data.json`
+        this.path = `./data.json`
     }
 
     getProducts = async () => {
@@ -29,9 +28,14 @@ class ProductManager {
         }
     }
 
-    addProduct({ title, description, price, thumbnail, code, stock }) {
+    addProduct = async ({ title, description, price, thumbnail, code, stock }) => {
+        const productsFS = await this.getProducts();
+        if (productsFS === undefined) {
+            this.products = []
+        } else {
+            this.products = productsFS
+        }
         const product = {
-            id: ++this.lastId,
             title,
             description,
             price,
@@ -40,14 +44,22 @@ class ProductManager {
             stock,
         };
 
-        if (!title || !description || !price || !thumbnail || !code || !stock) {
-            console.error("Todos los campos son obligatorios");
+        const existingProduct = this.getProductByCode(code);
+        if (existingProduct) {
+            console.error(`Ya existe un producto con el código ${code}`);
             return;
         }
 
-        const validarCodigo = this.products.find(productos => productos.code === product.code)
-        if (validarCodigo) {
-            return { status: "error", message: 'El producto no se pudo agregar porque el codigo es repetido' }
+        // ID Autoincremental
+        if (this.products.length === 0) {
+            product.id = 1
+        } else {
+            product.id = this.products[this.products.length - 1].id + 1
+        }
+
+        if (!title || !description || !price || !thumbnail || !code || !stock) {
+            console.error("Todos los campos son obligatorios");
+            return;
         }
 
 
@@ -88,6 +100,12 @@ class ProductManager {
         }
     }
 
+
+    getProductByCode = (code) => {
+        const existingProduct = this.products.find((p) => p.code === code);
+        return existingProduct;
+    }
+
     updateProduct = async (id, obj) => {
         try {
             const productos = await this.getProducts()
@@ -109,6 +127,7 @@ class ProductManager {
 }
 
 const nuevoProducto = new ProductManager();
+
 
 // mock.forEach(product => {
 //     nuevoProducto.addProduct(product)
