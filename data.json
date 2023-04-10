@@ -16,5 +16,14 @@
     "code": "BIKE0043",
     "stock": 2,
     "id": 4
+  },
+  {
+    "title": "Moto de carreras3",
+    "description": "moto",
+    "price": 30000,
+    "thumbnail": "auto.jpg",
+    "code": "AUTO004353",
+    "stock": 2,
+    "id": 5
   }
 ]

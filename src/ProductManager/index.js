@@ -114,6 +114,8 @@ class ProductManager {
         try {
             const productos = await this.getProducts()
 
+            if(isNaN(id)){return{message: 'No es un id válido'}}
+
             const productToUpdate = productos.find(p => p.id === id);
             if (!productToUpdate) {
                 console.error("No se encontró el producto con el id ingresado");

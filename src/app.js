@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
-const productosRouter = require('./routes/products.router')
-const cartRouter = require('./routes/cart.router')
+const productosRouter = require('./routers/products.router')
+const cartRouter = require('./routers/cart.router')
 
 // // handlebars ____________________
 // const handlebars = require('express-handlebars')

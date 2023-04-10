@@ -7,7 +7,7 @@ const router = Router()
 
 router.use(express.json())
 
-// TRAER TOODS LOS PRODUCTOS Y FILTRADO DE LIMIT
+// TRAER TOODS LOS PRODUCTOS Y FILTRADO CON LIMIT
 router.get('/', async (req, res) => {
     try {
         const products = await pm.getProducts()
@@ -37,6 +37,10 @@ router.post('/', async (req, res) => {
     try {
         // Obtenemos el body
         const productSend = req.body
+
+        // Comprobar que todos los campos estén completos 
+        const emptyValue = Object.values(productSend).find(value => value === '')
+        if(emptyValue){return res.status(400).send('Todos los campos son obligatorios')} 
         
         // desestructuración para enviar al método addProduct
         const {
