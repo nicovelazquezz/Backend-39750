@@ -49,7 +49,7 @@ router.post('/', async (req, res) => {
         } = productSend
 
 
-        const agregado = await pm.addProduct({title, description, price, thumbnail, code, stock})
+        await pm.addProduct({title, description, price, thumbnail, code, stock})
         const products = await pm.getProducts()
         res.status(200).send(products)
     }

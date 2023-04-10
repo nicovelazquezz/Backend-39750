@@ -11,8 +11,11 @@ class ProductManager {
     getProducts = async () => {
         try {
             const resp = await fs.readFile(this.path, 'utf-8')
-            const productos = JSON.parse(resp)
-            return productos
+            if (resp.length === 0){ return []}
+                else {
+                    const productos = JSON.parse(resp)
+                    return productos
+                }            
         } catch (error) {
             console.log(error)
         }
@@ -35,6 +38,7 @@ class ProductManager {
         } else {
             this.products = productsFS
         }
+
         const product = {
             title,
             description,
@@ -134,6 +138,26 @@ const nuevoProducto = new ProductManager();
 // });
 
 // nuevoProducto.getProducts()
+
+// nuevoProducto.addProduct({
+//     title: 'Auto familiar',
+//     description: 'Auto familiar con amplio espacio interior',
+//     price: 30000,
+//     thumbnail: 'auto.jpg',
+//     code: 'AUTO004',
+//     stock: 6
+// })
+// nuevoProducto.addProduct(
+//     {
+//         title: 'Camioneta deportiva',
+//         description: 'Camioneta deportiva de alta potencia',
+//         price: 40000,
+//         thumbnail: 'camioneta.jpg',
+//         code: 'CAMIONETA003',
+//         stock: 3
+//     })
+
+
 
 // nuevoProducto.getProductById(7)
 
