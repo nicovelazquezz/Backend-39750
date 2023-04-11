@@ -1,29 +1,46 @@
 [
   {
-    "title": "Bicicleta plegable",
-    "description": "Bicicleta plegable para transporte urbano",
-    "price": 800,
-    "thumbnail": "bicicletaa.jpg",
-    "code": "BIKE0043",
-    "stock": 2,
+    "title": "Camión cisterna",
+    "description": "Camión cisterna para transporte de líquidos",
+    "price": 90000,
+    "thumbnail": "camion.jpg",
+    "category": "vehiculo",
+    "status": true,
+    "code": "CAMION003",
+    "stock": 1,
     "id": 1
   },
   {
-    "title": "Bicicleta electrica a baterias",
-    "description": "Bicicleta plegable para transporte urbano",
-    "price": 800,
-    "thumbnail": "bicicletaa.jpg",
-    "code": "BIKE0043",
-    "stock": 2,
-    "id": 4
-  },
-  {
-    "title": "Moto de carreras3",
+    "title": "Fasco de",
     "description": "moto",
     "price": 30000,
     "thumbnail": "auto.jpg",
-    "code": "AUTO004353",
-    "stock": 2,
+    "category": "auto",
+    "status": true,
+    "code": "12",
+    "stock": 23,
     "id": 5
+  },
+  {
+    "title": "Fasco de",
+    "description": "moto",
+    "price": 30000,
+    "thumbnail": "auto.jpg",
+    "category": "auto",
+    "status": true,
+    "code": "123",
+    "stock": 23,
+    "id": 6
+  },
+  {
+    "title": "Fasco de",
+    "description": "moto",
+    "price": 30000,
+    "thumbnail": "auto.jpg",
+    "category": "auto",
+    "status": false,
+    "code": "1243",
+    "stock": 23,
+    "id": 7
   }
 ]

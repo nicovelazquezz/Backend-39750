@@ -31,7 +31,7 @@ class ProductManager {
         }
     }
 
-    addProduct = async ({ title, description, price, thumbnail, code, stock }) => {
+    addProduct = async ({ title, description, price, thumbnail, category, status, code, stock }) => {
         const productsFS = await this.getProducts();
         if (productsFS === undefined) {
             this.products = []
@@ -44,9 +44,15 @@ class ProductManager {
             description,
             price,
             thumbnail,
+            category,
+            status,
             code,
             stock,
         };
+
+        // si product.status no se define es true por defecto
+        (product.status === 'false') ? product.status = false : product.status = true;
+
 
         const existingProduct = this.getProductByCode(code);
         if (existingProduct) {
@@ -61,7 +67,7 @@ class ProductManager {
             product.id = this.products[this.products.length - 1].id + 1
         }
 
-        if (!title || !description || !price || !thumbnail || !code || !stock) {
+        if (!title || !description || !price || !category || !status || !code || !stock) {
             console.error("Todos los campos son obligatorios");
             return;
         }
@@ -135,10 +141,8 @@ class ProductManager {
 
 const nuevoProducto = new ProductManager();
 
-
-// mock.forEach(product => {
-//     nuevoProducto.addProduct(product)
-// });
+// const test =  async () => { await mock.forEach(product => { nuevoProducto.addProduct(product)})};
+// test()
 
 // nuevoProducto.getProducts()
 

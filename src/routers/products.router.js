@@ -38,22 +38,24 @@ router.post('/', async (req, res) => {
         // Obtenemos el body
         const productSend = req.body
 
-        // Comprobar que todos los campos estén completos 
-        const emptyValue = Object.values(productSend).find(value => value === '')
-        if(emptyValue){return res.status(400).send('Todos los campos son obligatorios')} 
+        // // Comprobar que todos los campos estén completos 
+        // const emptyValue = Object.values(productSend).find(value => value === '')
+        // if(emptyValue){return res.status(400).send('Todos los campos son obligatorios')} 
         
         // desestructuración para enviar al método addProduct
-        const {
+        let {
             title,
             description,
             price,
             thumbnail,
+            category,
+            status = true,
             code,
             stock
         } = productSend
 
 
-        await pm.addProduct({title, description, price, thumbnail, code, stock})
+        await pm.addProduct({title, description, price, thumbnail, category, status, code, stock})
         const products = await pm.getProducts()
         res.status(200).send(products)
     }
