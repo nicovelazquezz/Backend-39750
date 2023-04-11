@@ -6,9 +6,9 @@ const cartManager = new CartManager
 
 // TRAER TODOS LOS PRODUCTOS DEL CARRITO
 router.get('/', async (req, res) => {
-    try {        
+    try {
         const cart = await cartManager.getCart()
-        res.status(200).send(cart)        
+        res.status(200).send(cart)
     } catch (error) {
         res.status(400).send(console.log(error))
     }
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 
 // TRAER UN PRODUCTO POR ID
 router.get('/:id', async (req, res) => {
-    try {        
+    try {
         const id = Number(req.params.id)
         const carrito = await cartManager.getCartProductByID(id)
         await (carrito === undefined) ? res.status(404).send(`No se encontró un producto con el id #${id}`) : res.status(200).send(carrito)
@@ -30,9 +30,9 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const newCart = req.body
-                
+
         await cartManager.addCart(newCart)
-        res.status(200).send('agregado')        
+        res.status(200).send('agregado')
     } catch (error) {
         res.status(400).send(console.log(error))
     }
@@ -41,22 +41,35 @@ router.post('/', async (req, res) => {
 // ACTUALIZAR EL CARRITO
 router.post('/:cid/product/:pid', async (req, res) => {
     try {
-        const { cid, pid } = req.params
         const newCart = req.body
-        newCart['id'] = Number(pid)
+        const idBody = Number(newCart.id)
+        const cantidadBody = Number(newCart.cantidad)
+
+        const cid = Number(req.params.cid)
+        const pid = Number(req.params.pid)
+
+        const carrito = await cartManager.getCart()
         const carritoById = await cartManager.getCartProductByID(cid)
 
-        if(carritoById.error) return res.status(400).send({carritoById})
-        let productFounded = carritoById.productos.findIndex(productos => productos.id == pid)
 
-        if(productFounded !== -1) {
-            carritoById.productos[productFounded].cantidad = Number(carritoById.productos[productFounded].cantidad + Number(newCart.cantidad))
-            await cartManager.updateCart(pid, carritoById)
-            return res.status(200).send({ statusbar: 'success', message: 'producto agregado'});
-            }
-            else {
-                return res.status(400).send({'error': 'no se encontró el producto'})
-            }
+        // Obtengo el array y busco un producto que coincida con el id de la url para actualizar su cantidad
+        // el arrayfiltrado devuelve un objeto el cuál coincide su id con el id de parametro    
+        const arrayAFiltrar = carritoById.productos
+        const productoAActualizar = arrayAFiltrar.find(p => p.id == pid)
+        if (productoAActualizar === undefined) {
+            res.status(404).send({ 'Error': 'No se ha encontrado el producto' })
+        }
+
+        
+
+        if (Object.keys(productoAActualizar).includes("id") && productoAActualizar.id === idBody) {
+            console.log("El objeto contiene el id proporcionado");
+            const cantidadActualizada = productoAActualizar.cantidad + cantidadBody
+            res.send({ cantidadActualizada })
+        } else {
+            console.log("El objeto no contiene el id proporcionado");
+        }
+
 
     } catch (error) {
         console.log(error)
