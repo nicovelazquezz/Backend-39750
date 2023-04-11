@@ -5,7 +5,7 @@ const fs = promises
 class ProductManager {
     constructor(products = []) {
         this.products = products
-        this.path = `./data.json`
+        this.path = `./src/DAOS/data.json`
     }
 
     getProducts = async () => {
@@ -50,8 +50,7 @@ class ProductManager {
             stock,
         };
 
-        // si product.status no se define es true por defecto
-        (product.status === 'false') ? product.status = false : product.status = true;
+        (product.status === false) ? product.status = false : product.status = true;
 
 
         const existingProduct = this.getProductByCode(code);
@@ -67,7 +66,7 @@ class ProductManager {
             product.id = this.products[this.products.length - 1].id + 1
         }
 
-        if (!title || !description || !price || !category || !status || !code || !stock) {
+        if (!title || !description || !price || !category  || !code || !stock) {
             console.error("Todos los campos son obligatorios");
             return;
         }
@@ -97,7 +96,7 @@ class ProductManager {
             const productToDelete = productos.find((p) => p.id === id);
             if (!productToDelete) {
                 console.error("No se encontró el producto con el id ingresado");
-                return;
+                return
             }
 
             const productIndex = productos.findIndex((p) => p.id === id);
@@ -105,6 +104,7 @@ class ProductManager {
 
             await fs.writeFile(this.path, JSON.stringify(productos, null, 2), 'utf-8')
             console.log("Producto eliminado:", productToDelete);
+            return true;
         } catch (error) {
             console.log(error)
         }
@@ -151,6 +151,7 @@ const nuevoProducto = new ProductManager();
 //     description: 'Auto familiar con amplio espacio interior',
 //     price: 30000,
 //     thumbnail: 'auto.jpg',
+//     category: 'vehiculo',
 //     code: 'AUTO004',
 //     stock: 6
 // })
@@ -160,6 +161,7 @@ const nuevoProducto = new ProductManager();
 //         description: 'Camioneta deportiva de alta potencia',
 //         price: 40000,
 //         thumbnail: 'camioneta.jpg',
+//         category: 'vehiculo',
 //         code: 'CAMIONETA003',
 //         stock: 3
 //     })
@@ -169,6 +171,7 @@ const nuevoProducto = new ProductManager();
 //     description: 'Bicicleta plegable para transporte urbano',
 //     price: 800,
 //     thumbnail: 'bicicleta.jpg',
+//     category: 'vehiculo',
 //     code: 'BIKE004',
 //     stock: 12
 // })
@@ -177,6 +180,7 @@ const nuevoProducto = new ProductManager();
 //     description: 'Moto custom con estilo clásico',
 //     price: 12000,
 //     thumbnail: 'moto.jpg',
+//     category: 'vehiculo',
 //     code: 'MOTO003',
 //     stock: 4
 // })

@@ -1,11 +1,8 @@
-const express = require('express')
 const { Router } = require('express')
-const { ProductManager } = require('../ProductManager/index')
+const { ProductManager } = require('../DAOS/productManager')
 
 const pm = new ProductManager
 const router = Router()
-
-router.use(express.json())
 
 // TRAER TOODS LOS PRODUCTOS Y FILTRADO CON LIMIT
 router.get('/', async (req, res) => {
@@ -24,9 +21,9 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const params = Number(req.params.id)
-        const product = await pm.getProductById(params)
-        res.status(200).send(product)
-
+        const product = await pm.getProductById(params)        
+        await (product === undefined) ? res.status(404).send(`No se encontró un producto con el id #${params}`) : res.status(200).send(product)
+        
     } catch (error) {
         res.status(404).send(console.log(error))
     }
@@ -49,7 +46,7 @@ router.post('/', async (req, res) => {
             price,
             thumbnail,
             category,
-            status = true,
+            status,
             code,
             stock
         } = productSend
@@ -68,11 +65,8 @@ router.post('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         const params = Number(req.params.id)
-        const response = await pm.deleteProduct(params)   
-
-        res.status(200).send(`El producto fue eliminado con exito`)
-
-        if (!response.error) return res.status(400).send({ response })
+        const response = await pm.deleteProduct(params)          
+        await (response === undefined) ? res.status(404).send(`No se encontró un producto con el id #${params}`) : res.status(200).send(`El producto fue eliminado con exito`)
         
     } catch (error) {
         console.log(error)
