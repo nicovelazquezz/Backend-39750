@@ -38,4 +38,29 @@ router.post('/', async (req, res) => {
     }
 });
 
+// ACTUALIZAR EL CARRITO
+router.post('/:cid/product/:pid', async (req, res) => {
+    try {
+        const { cid, pid } = req.params
+        const newCart = req.body
+        newCart['id'] = Number(pid)
+        const carritoById = await cartManager.getCartProductByID(cid)
+
+        if(carritoById.error) return res.status(400).send({carritoById})
+        let productFounded = carritoById.productos.findIndex(productos => productos.id == pid)
+
+        if(productFounded !== -1) {
+            carritoById.productos[productFounded].cantidad = Number(carritoById.productos[productFounded].cantidad + Number(newCart.cantidad))
+            await cartManager.updateCart(pid, carritoById)
+            return res.status(200).send({ statusbar: 'success', message: 'producto agregado'});
+            }
+            else {
+                return res.status(400).send({'error': 'no se encontró el producto'})
+            }
+
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 module.exports = router

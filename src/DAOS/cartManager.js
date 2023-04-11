@@ -50,25 +50,46 @@ class CartManager {
 
     getCartProductByID = async (id) => {
         try {
-            const carrito = this.getCart()
-            const parseCarts = JSON.parse(carrito);
-            console.log(parseCarts[id - 1]);
-            if (!parseCarts[id - 1]) return { error: 'Error! El carrito No existe' }
+            const carrito = await this.getCart()
+            if (!carrito[id - 1]) return { error: 'Error! El carrito No existe' }
 
-            return parseCarts[id - 1]
+            return carrito[id - 1]
         } catch (error) {
             console.log(error)
         }
     }
 
-    updateCart = async () => {
+    updateCart = async (cid, data) => {
         try {
-            
-        } catch (error) {
-            console.log(error)
-        }
-    }
+            const carrito = await this.getCart()
+            if (isNaN(Number(cid))) return { status: "error", message: 'No es un id válido' };
 
+            const findId = carrito.findIndex(product => product.id == cid)
+            console.log(findId)
+            if (findId === -1) return { status: "error", message: 'No se encontró el id' };
+
+
+            this.cart = carrito.map(element => {
+                if(element.id == cid){
+                    element = Object.assign(element, data);
+                return element
+                }
+                return element
+            })
+            
+
+            const toJSON = JSON.stringify(this.cart, null, 2);
+            await fs.writeFile(this.path, toJSON)
+            return this.cart
+        }
+        catch (err) {
+            console.log(err);
+        }
+
+    }
 }
+
+
+
 
 module.exports = { CartManager }
