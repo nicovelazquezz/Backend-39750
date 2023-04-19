@@ -1,0 +1,45 @@
+<div>
+    <h3 class="font-bold text-2xl p-3 text-center text-gray-500 bg-gray-800">Realtime Productos</h3>     
+    <div>
+        <div class="listProducts mx-auto flex my-3 w-full px-4 mt-6 flex-wrap pb-12 gap-4">
+            <div class="text-2xl background-color:rgb(245 245 245)">
+
+                <p> ${title}</p>
+                ${category}
+                ${price} 
+                ${description} 
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io()
+    socket.on('productos', data => {
+        console.log(data)
+
+        let list = document.querySelector('.listProducts')
+        let productos = ''
+        data.forEach((product) => {
+            const { title, category, price, description } = product
+            productos += `<div class="text-2xl bg-neutral-200 mx-auto p-5 space-y-4 border rounded-lg">
+                <p class="mt-3 flex items-center font-sans font-bold font-wtext-sm text-gray-500 uppercase">${category}</p>
+                <h4 class="text-lg leading-6 font-semibold font-sans text-skin-inverted group-hover:text-skin-primary uppercase">${title}</h4>
+                <p class="mt-1 text-sm font-normal text-gray-700 leading-5"> ${description} </p>
+                
+                <p class=""> $${price} </p> 
+                
+                
+                </div>`
+        })
+        list.innerHTML = productos 
+    })
+</script>

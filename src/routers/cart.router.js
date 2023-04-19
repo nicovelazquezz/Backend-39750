@@ -4,6 +4,8 @@ const { CartManager } = require('../DAOS/cartManager')
 
 const cartManager = new CartManager
 
+
+
 // TRAER TODOS LOS PRODUCTOS DEL CARRITO
 router.get('/', async (req, res) => {
     try {
@@ -41,34 +43,12 @@ router.post('/', async (req, res) => {
 // ACTUALIZAR EL CARRITO
 router.post('/:cid/product/:pid', async (req, res) => {
     try {
-        const newCart = req.body
-        const idBody = Number(newCart.id)
-        const cantidadBody = Number(newCart.cantidad)
 
-        const cid = Number(req.params.cid)
-        const pid = Number(req.params.pid)
+        const data = req.body
+        const cid = req.params.cid
 
-        const carrito = await cartManager.getCart()
-        const carritoById = await cartManager.getCartProductByID(cid)
-
-
-        // Obtengo el array y busco un producto que coincida con el id de la url para actualizar su cantidad
-        // el arrayfiltrado devuelve un objeto el cuál coincide su id con el id de parametro    
-        const arrayAFiltrar = carritoById.productos
-        const productoAActualizar = arrayAFiltrar.find(p => p.id == pid)
-        if (productoAActualizar === undefined) {
-            res.status(404).send({ 'Error': 'No se ha encontrado el producto' })
-        }
-
-        
-
-        if (Object.keys(productoAActualizar).includes("id") && productoAActualizar.id === idBody) {
-            console.log("El objeto contiene el id proporcionado");
-            const cantidadActualizada = productoAActualizar.cantidad + cantidadBody
-            res.send({ cantidadActualizada })
-        } else {
-            console.log("El objeto no contiene el id proporcionado");
-        }
+        const respuesta = await cartManager.updateCart(cid, data)
+        res.send('oks')
 
 
     } catch (error) {

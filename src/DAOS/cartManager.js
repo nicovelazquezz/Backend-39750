@@ -8,24 +8,31 @@ class CartManager {
     }
 
     addCart = async (newCart) => {
-        try {            
+        try {
             const cart = await this.getCart();
             this.cart = cart
-            
+
+
             //ID autoincremental
             if (this.cart.length === 0) {
                 newCart.id = 1
             } else {
-                newCart.id = this.cart[this.cart.length - 1].id + 1
+                const productMatch = cart.find(e => e.id === newCart.id)
+                if(productMatch) {
+                    // console.log(productMatch)
+                } else {
+                    newCart.id = this.cart[this.cart.length - 1].id + 1
+                }
             }
 
-            if (Object.values(newCart).every(value => value)) {
-                this.cart.push(newCart);
-                const toJSON = JSON.stringify(this.cart, null, 2);
-                await fs.writeFile(this.path, toJSON)
-            }
+            // if (Object.values(newCart).every(value => value)) {
+            //     this.cart.push(newCart);
+            //     const toJSON = JSON.stringify(this.cart, null, 2);
+            //     await fs.writeFile(this.path, toJSON)
+            // }
 
-            return [];
+
+           console.log(newCart)
 
 
         } catch (error) {
@@ -61,26 +68,22 @@ class CartManager {
 
     updateCart = async (cid, data) => {
         try {
-            const carrito = await this.getCart()
+            const carrito = await this.getCartProductByID(cid)
             if (isNaN(Number(cid))) return { status: "error", message: 'No es un id válido' };
 
-            const findId = carrito.findIndex(product => product.id == cid)
-            console.log(findId)
-            if (findId === -1) return { status: "error", message: 'No se encontró el id' };
-
-
-            this.cart = carrito.map(element => {
-                if(element.id == cid){
-                    element = Object.assign(element, data);
-                return element
+            carrito.products?.forEach(element => {
+                if (element.id === data.id) {
+                    element.cantidad += data.cantidad
                 }
-                return element
             })
-            
 
-            const toJSON = JSON.stringify(this.cart, null, 2);
-            await fs.writeFile(this.path, toJSON)
-            return this.cart
+            await this.addCart(carrito)
+
+
+
+            // const toJSON = JSON.stringify(this.cart, null, 2);
+            // await fs.writeFile(this.path, toJSON)
+            // return this.cart
         }
         catch (err) {
             console.log(err);
