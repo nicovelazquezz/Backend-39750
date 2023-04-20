@@ -39,6 +39,8 @@ class ProductManager {
             this.products = productsFS
         }
 
+        code = Date.now()
+
         const product = {
             title,
             description,
@@ -52,6 +54,7 @@ class ProductManager {
 
         (product.status === false) ? product.status = false : product.status = true;
 
+        console.log(code)
 
         const existingProduct = this.getProductByCode(code);
         if (existingProduct) {
@@ -60,13 +63,13 @@ class ProductManager {
         }
 
         // ID Autoincremental
-        if (this.products.length === 0) {
+        if (this.products.length === 0 ) {
             product.id = 1
         } else {
             product.id = this.products[this.products.length - 1].id + 1
         }
 
-        if (!title || !description || !price || !category  || !code || !stock) {
+        if (!title || !description || !price || !category ) {
             console.error("Todos los campos son obligatorios");
             return;
         }

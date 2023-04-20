@@ -19,7 +19,7 @@ class CartManager {
             } else {
                 const productMatch = cart.find(e => e.id === newCart.id)
                 if(productMatch) {
-                    // console.log(productMatch)
+                    console.log(productMatch)
                 } else {
                     newCart.id = this.cart[this.cart.length - 1].id + 1
                 }
