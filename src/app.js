@@ -31,6 +31,13 @@ app.get('/chat', (req, res) => {
     })
 })
 
+
+app.get('/home', ( req, res)=>{
+    res.render('home', {
+    })
+})
+
+
 io.on('connection', socket => {
     console.log('Nuevo cliente conectado')
 
@@ -48,7 +55,7 @@ io.on('connection', socket => {
     io.emit('message-global', 'Mensaje global desde IO y no socket')
 })
 
-app.use('/', realtimeProd )
+app.use('/realtimeproducts', realtimeProd )
 app.use('/api/cart', cartRouter)
 app.use('/api/products', productosRouter)
 

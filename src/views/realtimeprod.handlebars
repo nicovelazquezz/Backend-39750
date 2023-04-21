@@ -1,4 +1,5 @@
-<h3 class="font-bold text-2xl p-3 text-center text-gray-500 bg-gray-800">Realtime Productos</h3>
+<h3 class="font-bold text-2xl p-3 text-center text-neutral-200 bg-green-800">Realtime Productos</h3>
+<div class="w-full flex justify-center"><button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-10" onclick="window.location.href='/home'">Ir a Home</button></div>
 <div class="container mx-auto p-4 bg-white">
     <div class="w-full md:w-1/2 lg:w-1/3 mx-auto my-12">
         <form class="formProduct flex flex-col mt-4">
@@ -10,26 +11,25 @@
                 class=" my-2 block px-4 py-3 w-full rounded-md bg-gray-100 focus:border-gray-500 focus:bg-white focus:ring-0 text-sm">
             <input placeholder="Descripción" type="text" name="description"
                 class=" my-2 block px-4 py-3 w-full rounded-md bg-gray-100 focus:border-gray-500 focus:bg-white focus:ring-0 text-sm">
-            <input type="submit" value="enviar"
-                class=" my-2 block mt-4 px-4 py-3 leading-6 text-base rounded-md border text-white focus:outline-none bg-blue-500 text-blue-100 hover:text-white focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer inline-flex items-center w-full justify-center items-center font-medium focus:outline-none">
+            <input type="submit" value="Enviar"
+                class=" my-2 block mt-4 px-4 py-3 uppercase leading-6 text-base rounded-md border text-white focus:outline-none bg-green-500 text-green-100 hover:text-white focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer inline-flex items-center w-full justify-center items-center hover:bg-green-700 font-medium focus:outline-none">
         </form>
     </div>
     <table class="w-full table-collapse">
         <thead>
             <tr>
-                <th class="text-sm text-left uppercase font-semibold text-grey-darker p-3 bg-gray-200">
+                <th class=" text-sm text-left uppercase font-semibold text-grey-darker p-3 bg-green-100">
                     Name
                 </th>
-                <th class="text-sm text-left uppercase font-semibold text-grey-darker p-3 bg-gray-200">
+                <th class=" text-sm text-left uppercase font-semibold text-grey-darker p-3 bg-green-100">
                     Category
                 </th>
-                <th class="text-sm text-left uppercase font-semibold text-grey-darker p-3 bg-gray-200">
+                <th class=" text-sm text-left uppercase font-semibold text-grey-darker p-3 bg-green-100">
                     Description
                 </th>
-                <th class="text-sm text-left uppercase font-semibold text-grey-darker p-3 bg-gray-200 text-center">
+                <th class=" text-sm text-left uppercase font-semibold text-grey-darker p-3 bg-green-100 text-center">
                     Price
                 </th>
-                <th class="text-sm uppercase font-semibold text-grey-darker p-3 bg-gray-200"></th>
             </tr>
         </thead>
         <tbody class="align-baseline listProducts">
@@ -65,7 +65,7 @@
     socket.on('productos', data => {
 
 
-        let list = document.querySelector('.listProducts')
+        let listProducts = document.querySelector('.listProducts')
         let productos = ''
         data.forEach((product) => {
             const { title, category, price, description } = product
@@ -76,7 +76,7 @@
                     <td class="text-sm p-3 border-t border-grey-light whitespace-no-wrap">
                         ${title}
                     </td>
-                    <td class="text-sm p-3 border-t border-grey-light whitespace-no-wrap">
+                    <td class="text-sm p-3 border-t border-grey-light whitespace-no-wrap capitalize">
                         ${category}
                     </td>
                     <td class="text-sm p-3 border-t border-grey-light whitespace-no-wrap">
@@ -85,12 +85,10 @@
                     <td class="text-sm p-3 border-t border-grey-light whitespace-no-wrap text-center">
                         $${price}
                     </td>
-                    <td class="text-sm p-3 border-t border-grey-light whitespace-no-wrap text-sm group-hover:visible">
-                    </td>
                 </tr>
                 `
 
         })
-        list.innerHTML = productos
+        listProducts.innerHTML = productos
     })
 </script>

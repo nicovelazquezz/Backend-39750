@@ -54,7 +54,6 @@ class ProductManager {
 
         (product.status === false) ? product.status = false : product.status = true;
 
-        console.log(code)
 
         const existingProduct = this.getProductByCode(code);
         if (existingProduct) {
